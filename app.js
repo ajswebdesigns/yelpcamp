@@ -20,11 +20,26 @@ app.set('view engine', 'ejs')
 // Set the path
 app.set('views', path.join(__dirname, 'views'));
 
+// Parse the Request Body
+
+app.use(express.urlencoded({extended:true}))
 // Index Route
 app.get('/campgrounds', async (req, res)=>{
  const campgrounds = await Campground.find({})
  res.render('campgrounds/index', {campgrounds})
 })
+
+// Create Route
+app.get('/campgrounds/new', (req, res)=>{
+  res.render('campgrounds/new')
+})
+
+app.post('/campgrounds', async (req, res)=>{
+  const campground = new Campground(req.body.campground)
+  await campground.save()
+  res.redirect(`/campgrounds/${campground._id}`)
+})
+
 
 // Show Route:
 app.get('/campgrounds/:id', async (req, res)=>{
