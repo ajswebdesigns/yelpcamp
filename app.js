@@ -22,20 +22,9 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'));
 
 
-app.get('/makeCampground', async (req, res)=>{
-  const camp = new campground({
-    title: 'First Campground',
-    description: 'more data'
-  })
-  await camp.save()
-  .then((data)=>{
-    console.log('Yay the below data has been saved sucessfully!')
-    console.log(data)
-  })
-  .catch((e)=>{
-    console.log(e)
-  })
-  res.send('perfect')
+app.get('/campgrounds', async (req, res)=>{
+ const campgrounds = await campground.find({})
+ res.render('campgrounds/index', {campgrounds})
 })
 
 app.listen(3000, ()=>{
